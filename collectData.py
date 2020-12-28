@@ -19,10 +19,8 @@ driver.get(URL)
 def availabilityOfData(date):
     
     """
-    
     The goal of this function is to check if data is available for this date.
     0 when data is not available and 1 if it is
-    
     """
     
     checkdata = driver.find_element_by_id("date")
