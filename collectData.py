@@ -9,10 +9,31 @@ from selenium import webdriver
 import pandas as pd
 from datetime import datetime,timedelta
 from itertools import product
+import os
+from selenium.webdriver.chrome.options import Options
 
 
-driver = webdriver.Chrome('./chromedriver 2')
+REPOSITORY = os.getcwd()
+print(REPOSITORY)
 
+
+
+def set_chrome_options() -> None:
+    
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_prefs = {}
+    chrome_options.experimental_options["prefs"] = chrome_prefs
+    chrome_prefs["profile.default_content_settings"] = {"images": 2}
+    return chrome_options
+
+
+chrome_options = set_chrome_options()
+driver = webdriver.Chrome(options=chrome_options)
+
+#driver = webdriver.Chrome(REPOSITORY+'/chromedriver')
 URL = 'http://abourse.com/histoActionsJour.html'
 
 driver.get(URL)
@@ -81,6 +102,8 @@ def getData(listOfdays):
     
     result, lst_date = [], []
     for date in listOfdays:
+        
+        print(date)
     
         if availabilityOfData(date)==1:
             
@@ -93,7 +116,8 @@ def getData(listOfdays):
                     for i,j in product(usefulIndex,range(1,19))])
             
             lst_date.append([date for i in range(len(usefulIndex))])
-
+        
+    driver.close()
             
     return result, lst_date
 
@@ -122,7 +146,8 @@ if __name__== "__main__":
     list_date = getWorkdays("2016-08-09","2016-08-10")
     data, lst_date = getData(list_date)
     dataFinal = outputToDataFrame(data, 18,lst_date)
-    dataFinal.to_csv("data/StockData_part1.csv",index=False)
+    print(dataFinal.shape)
+    dataFinal.to_csv("data/StockData.csv",index=False)
 
 
 
