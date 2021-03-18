@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+""" TO DO
+Inserer au fur et à mesure les donnees dans le fichier que d'attendre de tout collecter 
+avant de l'enrégistrer en .csv
+"""
+
 """
 This script scrapes data from stock website
 """
@@ -17,7 +22,7 @@ REPOSITORY = os.getcwd()
 print(REPOSITORY)
 
 
-
+"""
 def set_chrome_options() -> None:
     
     chrome_options = Options()
@@ -32,8 +37,9 @@ def set_chrome_options() -> None:
 
 chrome_options = set_chrome_options()
 driver = webdriver.Chrome(options=chrome_options)
+"""
 
-#driver = webdriver.Chrome(REPOSITORY+'/chromedriver')
+driver = webdriver.Chrome(REPOSITORY+'/chromedriver')
 URL = 'http://abourse.com/histoActionsJour.html'
 
 driver.get(URL)
@@ -143,11 +149,12 @@ def getWorkdays(start, end, excluded=(6, 7)):
     return days_final
 
 if __name__== "__main__":
-    list_date = getWorkdays("2016-08-09","2016-08-10")
+    #"2021-01-22"
+    list_date = getWorkdays("2020-01-01","2020-12-31")
     data, lst_date = getData(list_date)
     dataFinal = outputToDataFrame(data, 18,lst_date)
     print(dataFinal.shape)
-    dataFinal.to_csv("data/StockData.csv",index=False)
+    dataFinal.to_csv(REPOSITORY+"/data/StockData_6.csv",index=False)
 
 
 
